@@ -1,0 +1,22 @@
+#
+
+#  vim:ts=2:sts=2:sw=2:et
+
+# https://devcenter.wercker.com/reference/wercker-yml/
+
+box: debian
+
+build:
+  steps:
+    - script:
+        name: ci bootstrap
+        code: setup/ci_bootstrap.sh
+    - script:
+        name: init
+        code: make init
+    - script:
+        name: build
+        code: make ci
+    - script:
+        name: test
+        code: make test

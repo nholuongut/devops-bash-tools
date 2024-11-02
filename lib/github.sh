@@ -1,0 +1,139 @@
+#!/usr/bin/env bash
+#  vim:ts=4:sts=4:sw=4:et
+#  args: echo user={user} name={name} repo={repo}
+
+set -euo pipefail
+[ -n "${DEBUG:-}" ] && set -x
+srcdir_github_lib="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# shellcheck disable=SC1090
+. "$srcdir_github_lib/utils.sh"
+
+# shellcheck disable=SC1090
+. "$srcdir_github_lib/git.sh"
+
+# shellcheck disable=SC2034
+usage_github_cli_required="Requires GitHub CLI to be installed and configured, as well as jq"
+
+# ERE format regex
+github_pull_request_url_regex='https://github.com/[[:alnum:]/_-]+/pull/[[:digit:]]+'
+
+get_github_repo(){
+    git remote -v 2>/dev/null |
+    grep github.com |
+    awk '{print $2}' |
+    head -n1 |
+    sed '
+        s,.*://,,;
+        s/.*@//;
+        s/[^:/]*[:/]//;
+        s/\.git$//;
+        s|^/||;
+    '
+}
+
+is_github_origin(){
+    git remote -v | grep -q '^origin.*github.com[/:]'
+}
+
+check_github_origin(){
+    if ! is_github_origin; then
+        die 'GitHub is not set as remote origin in current repo!'
+    fi
+}
+
+github_origin_owner_repo(){
+    local owner_repo
+    owner_repo="$(
+        git remote -v |
+        grep -m1 '^origin.*github.com[/:]' |
+        sed '
+            s|.*github.com[:/]||;
+            s/\.git.*//;
+            s/[[:space:]].*//
+        ' ||
+        :
+    )"
+    is_github_owner_repo "$owner_repo" || die "<owner>/<repo> '$owner_repo' does not match expected format"
+    echo "$owner_repo"
+}
+
+is_github_owner_repo(){
+    local repo="$1"
+    # .github repo is valid
+    [[ "$repo" =~ ^[[:alnum:]-]+/[[:alnum:]._-]+$ ]]
+}
+
+get_github_user(){
+    if [ -n "${GITHUB_USER:-}" ]; then
+        echo "$GITHUB_USER"
+    else
+        # get currently authenticated user
+        "$srcdir_github_lib/../github/github_api.sh" /user | jq -r .login
+    fi
+}
+
+github_result_has_more_pages(){
+    local output="$1"
+    if [ -z "$(jq '.[]' <<< "$output")" ]; then
+        return 1
+    elif jq -r '.message' <<< "$output" >&2 2>/dev/null; then
+        exit 1
+    fi
+    return 0
+}
+
+get_github_repos(){
+    local owner="${1:-}"
+    if [ -z "$owner" ]; then
+        owner="$(get_github_user)"
+    fi
+    local is_org="${2:-}"
+    local filter="${3:-.}"
+    local prefix
+    if [ -n "$is_org" ]; then
+        prefix="orgs"
+    else
+        prefix="users"
+    fi
+    local page=1
+    while true; do
+        if ! output="$("$srcdir_github_lib/../github/github_api.sh" "/$prefix/$owner/repos?page=$page&per_page=100")"; then
+            echo "ERROR" >&2
+            exit 1
+        fi
+        if [ -z "$(jq '.[]' <<< "$output")" ]; then
+            break
+        elif jq -r '.message' <<< "$output" >&2 2>/dev/null; then
+            exit 1
+        fi
+        jq_debug_pipe_dump <<< "$output" |
+        jq -r ".[] | select(.fork | not) | $filter | .name"
+        ((page+=1))
+    done
+}
+
+get_github_repo_branches(){
+    local repo="$1"
+    local page=1
+    while true; do
+        if ! output="$("$srcdir_github_lib/../github_api.sh" "/repos/$repo/branches?page=$page&per_page=100")"; then
+            echo "ERROR" >&2
+            exit 1
+        fi
+        if [ -z "$(jq '.[]' <<< "$output")" ]; then
+            break
+        elif jq -r '.message' <<< "$output" >&2 2>/dev/null; then
+            exit 1
+        fi
+        jq_debug_pipe_dump <<< "$output" |
+        jq -r ".[].name"
+        ((page+=1))
+    done
+}
+
+parse_pull_request_url(){
+    local text="$1"
+    grep -Eom1 "$github_pull_request_url_regex" <<< "$text" ||
+    die "Failed to parse GitHub pull request URL"
+}

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BackgroundColor</key>
+	<data>
+	xxxx
+	</data>
+	<key>Bell</key>
+	<false/>
+	<key>CursorBlink</key>
+	<true/>
+	<key>CursorColor</key>
+	<data>
+	xxxxx
+	</data>
+	<key>CursorType</key>
+	<integer>0</integer>
+	<key>Font</key>
+	<data>
+	xxxxx
+	</data>
+	<key>FontAntialias</key>
+	<false/>
+	<key>ProfileCurrentVersion</key>
+	<real>2.0699999999999998</real>
+	<key>SelectionColor</key>
+	<data>
+	xxxxxx
+	</data>
+	<key>ShowActiveProcessArgumentsInTitle</key>
+	<true/>
+	<key>ShowCommandKeyInTitle</key>
+	<false/>
+	<key>ShowDimensionsInTitle</key>
+	<true/>
+	<key>ShowRepresentedURLInTitle</key>
+	<true/>
+	<key>ShowRepresentedURLPathInTitle</key>
+	<true/>
+	<key>ShowShellCommandInTitle</key>
+	<false/>
+	<key>ShowTTYNameInTitle</key>
+	<false/>
+	<key>ShowWindowSettingsNameInTitle</key>
+	<false/>
+	<key>TextBoldColor</key>
+	<data>
+	xxxxxx
+	</data>
+	<key>TextColor</key>
+	<data>
+	xxxxxx
+	</data>
+	<key>VisualBell</key>
+	<false/>
+	<key>VisualBellOnlyWhenMuted</key>
+	<false/>
+	<key>WindowTitle</key>
+	<string>Term</string>
+	<key>columnCount</key>
+	<integer>239</integer>
+	<key>name</key>
+	<string>nholuongut</string>
+	<key>rowCount</key>
+	<integer>72</integer>
+	<key>shellExitAction</key>
+	<integer>1</integer>
+	<key>type</key>
+	<string>Window Settings</string>
+</dict>
+</plist>

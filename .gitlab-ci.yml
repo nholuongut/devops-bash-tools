@@ -1,0 +1,14 @@
+#  vim:ts=2:sts=2:sw=2:et
+#
+
+# https://docs.gitlab.com/ee/ci/yaml/README.html
+
+#include: '.gitlab/*.y*ml'
+
+image: ubuntu:18.04
+
+job:
+  before_script:
+    - setup/ci_bootstrap.sh
+  script:
+    - make init && make ci test

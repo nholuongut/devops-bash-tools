@@ -1,0 +1,30 @@
+#  vim:ts=4:sts=4:sw=4:et
+
+
+# Gentoo Portage packages to install - one per line
+
+app-emacs/gentoo-syntax
+app-vim/gentoo-syntax
+at
+bash-completion
+bind-tools
+denyhosts
+e2fsprogs
+ethtool
+gentoolkit
+lsof
+mailx
+ntp
+ntp-syntax
+openssh
+pam-syntax
+pciutils
+portsentry
+scanlogd
+slocate
+sudo
+syslog-ng
+traceroute
+usbutils
+vim
+vixie-cron

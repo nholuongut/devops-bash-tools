@@ -1,0 +1,19 @@
+#
+
+---
+extends: default
+
+rules:
+  line-length: disable
+  comments: disable
+  comments-indentation: disable
+  colons:
+    ignore: |
+      # need the paths to work as /test/test.yaml as well as /pylib/test/test.yaml
+      test.yaml
+  indentation:
+    ignore: |
+      calico.yaml
+  empty-lines:
+    ignore: |
+      calico.yaml

@@ -1,0 +1,34 @@
+#
+#
+#  Author: Nho Luong
+#  Date: Tue Feb 4 09:53:28 2020 +0000
+#
+#  vim:ts=2:sts=2:sw=2:et
+#
+#  https://github.com/nholuongut/templates
+#
+#  If you're using my code you're welcome to connect with me on LinkedIn and optionally send me feedback
+#
+# ============================================================================ #
+#                B i t b u c k e t   C I / C D   P i p e l i n e
+# ============================================================================ #
+
+# Reference:
+#
+#   https://support.atlassian.com/bitbucket-cloud/docs/configure-bitbucket-pipelinesyml/
+
+# Languages:
+#
+#   https://confluence.atlassian.com/x/5Q4SMw
+
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: atlassian/default-image:2
+
+pipelines:
+  default:
+    - step:
+        script:
+          - setup/ci_bootstrap.sh
+          - make init
+          - make ci
+          - make test

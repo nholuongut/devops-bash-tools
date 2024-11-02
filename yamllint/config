@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#  vim:ts=2:sts=2:sw=2:et:filetype=yaml
+ 
+
+extends: default
+
+rules:
+  # don't warn on no --- at start since many yamls don't have this
+  document-start: disable
+
+  # often want to differentiate no space commented out '#code' from '# intentional human comments'
+  comments: disable
+
+  # > 80 char length? Really? I love the 80s but this one should have been left there...
+  line-length: disable
+
+  # too many spaces after colons - meh - sometimes it's nice to align adjacent lines values
+  colons: disable

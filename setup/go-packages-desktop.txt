@@ -1,0 +1,13 @@
+#  vim:ts=4:sts=4:sw=4:et
+
+
+# List of Golang software to install via 'go install', one per line, and if not @version is suffixed, will assume @latest
+
+golang.org/x/tools/cmd/goimports
+github.com/remind101/assume-role
+github.com/songgao/colorgo
+github.com/cjbassi/gotop
+github.com/mkouhei/gosh
+github.com/rakyll/hey
+#github.com/PaulRosset/previs
+#github.com/wercker/wercker

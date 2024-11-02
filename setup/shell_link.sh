@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+#  vim:ts=4:sts=4:sw=4:et
+
+# Checks if .bashrc and .bash_profile are sourced, otherwise injects source lines in to the $HOME directory equivalents
+
+set -euo pipefail
+[ -n "${DEBUG:-}" ] && set -x
+srcdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+bash_tools="$srcdir/.."
+
+conf_files="$(sed 's/#.*//; /^[[:space:]]*$/d' "$bash_tools/setup/files.txt")"
+
+setup_file(){
+    local filename="$1"
+    if grep -Eq "^[[:space:]]*(source|\\.)[[:space:]]+$bash_tools/$filename" ~/"$filename" 2>/dev/null; then
+        echo "$filename already sourced in ~/$filename"
+    else
+        echo "injecting into ~/$filename: source $bash_tools/$filename"
+        echo "source $bash_tools/$filename" >> ~/"$filename"
+    fi
+}
+
+setup_file .bashrc
+setup_file .bash_profile
+
+setup_file .zshrc
+setup_file .zprofile
+setup_file .zshenv
+setup_file .zlogin
+setup_file .zlogout
+
+# unreliable that HOME is set, ensure shell evaluates to the right thing before we use it
+[ -n "${HOME:-}" ] || HOME=~
+
+echo
+echo "symlinking dot files to \$HOME directory: $HOME"
+echo
+
+opts=""
+if [ -n "${FORCE:-}" ]; then
+    opts="-f"
+fi
+
+for filename in $conf_files; do
+    if [[ "$filename" =~ / ]]; then
+        dirname="${filename%/*}"
+        dirname2="${dirname#configs}"
+        dirname2="${dirname2#/}"
+        filename="${filename##*/}"
+        mkdir -pv ~/"$dirname2"
+        # want opt expansion
+        # shellcheck disable=SC2086
+        ln -sv $opts -- "$PWD/$dirname/$filename" ~/"$dirname2"/ || :
+    else
+        # want opt expansion
+        # shellcheck disable=SC2086
+        ln -sv $opts -- "$PWD/$filename" ~ || continue
+        # if we link .vimrc then run the vundle install and get plugins to prevent vim errors every startup
+        if [ "$filename" = .vimrc ]; then
+            "$srcdir/../setup/install_vundle.sh" || :
+        fi
+    fi
+done
+
+# want opt expansion
+# shellcheck disable=SC2086
+ln -sv $opts -- ~/.gitignore ~/.gitignore_global || :
+
+if [[ "${USER:-}" =~ nholuongutnho|hnho ]]; then
+    ln -sv -- "$PWD/.gitconfig.local" ~ || :
+fi

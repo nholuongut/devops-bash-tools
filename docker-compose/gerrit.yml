@@ -1,0 +1,12 @@
+#  vim:ts=2:sts=2:sw=2:et
+#
+
+version: '3'
+
+services:
+  gerrit:
+    hostname: gerrit
+    image: gerritcodereview/gerrit:${VERSION:-latest}
+    ports:
+      - 8080:8080
+      - 29418:29418

@@ -1,0 +1,35 @@
+#
+
+# ============================================================================ #
+#                          Alpine Package Requirements
+# ============================================================================ #
+
+bash
+bc
+coreutils
+curl
+findutils
+gcc
+git
+go
+grep
+jq
+libxml2-utils  # needed for xmllint
+make
+openssh-client
+parallel
+perl
+perl-app-cpanminus
+ruby-dev # to build Travis CI gem
+wget
+which
+zip
+unzip
+
+# causes errors now so moved to apk-packages-optional.txt to allow failures
+#
+#   python (missing):
+# ERROR: unsatisfiable constraints:
+#     required by: world[python]
+#python
+#py-pip

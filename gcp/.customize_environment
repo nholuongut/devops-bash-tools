@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+#  vim:ts=4:sts=4:sw=4:et
+
+
+# ============================================================================ #
+#           G C P   C l o u d   S h e l l   C u s t o m i z a t i o n
+# ============================================================================ #
+
+# see log at /var/log/customize_environment
+
+# /google/devshell/customize_environment_done is touched when completed
+
+# called as root by GCP
+
+set -euxo pipefail
+
+bash_tools="$HOME/github/bash-tools"
+
+if ! [ -d "$bash_tools" ]; then
+    parent_dir="${bash_tools%/*}"
+    mkdir -pv "$parent_dir"
+    pushd "$parent_dir"
+    git clone https://github.com/nholuongut/DevOps-Bash-tools "$bash_tools"
+    popd
+fi
+
+mkdir -pv ~/.cloudshell
+
+# suppress apt-get warnings about being ephemeral, that is what this script is for
+touch ~/.cloudshell/no-apt-get-warning
+
+pushd "$bash_tools"
+
+git pull
+
+# not calling gcp-shell which also links because it will link config files to /root
+# instead just run 'make gcp-shell' one time to set up $USER's $HOME
+make system-packages
+
+popd

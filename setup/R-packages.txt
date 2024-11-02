@@ -1,0 +1,18 @@
+#
+
+
+# R packages to install from CRAN
+
+arules # Apriori Association Rules
+data.table
+devtools
+e1071 # Naiive Bayes
+ggplot2
+httr
+jsonlite
+reshape
+RJava
+ROCR # used with Naiive Bayes
+rpart # Decision Trees
+rpart.plot
+slidify

@@ -1,0 +1,20 @@
+#
+---
+compact: true
+directory:
+  - .
+skip-path:
+  - sql
+  - templates
+  - vagrant/kubernetes/calico.yaml
+  - vagrant/kubernetes/LFS258
+docker-image: nholuongut/bash-tools
+download-external-modules: true  # without this gets lots of annoying warning lines such as '2022-02-22 16:14:40,180 [MainThread  ] [WARNI]  Failed to download module x/y/z:n.n.n'
+framework:
+  - all
+no-guide: true
+output: cli
+quiet: true
+repo-id: nholuongut/DevOps-Bash-tools  # what to report to Bridgecrew Cloud - without this gets annoying duplicate repos such as 'nholuongut_cli_repo/bash-tools'
+skip-suppressions: true
+soft-fail: true

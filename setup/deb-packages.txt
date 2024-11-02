@@ -1,0 +1,35 @@
+#
+
+# ============================================================================ #
+#                          Deb Package Requirements
+# ============================================================================ #
+
+bash
+bc
+build-essential
+ca-certificates
+cpanminus
+curl
+#direnv
+git
+#gnupg
+golang
+groovy  # needed by check_groovyc.sh in Jenkins shared library CI/CD workflow in GitHub Actions
+iputils-ping
+jq
+less
+libperl-dev    # needed for PAR:Packer
+libxml2-utils  # needed for xmllint
+make
+openssh-client
+parallel
+perl
+procps
+psmisc  # for fuser for apt_wait.sh
+ruby-dev  # to build Travis CI gem
+time
+wget
+# included in distro
+#which
+zip
+unzip

@@ -1,0 +1,8 @@
+#  vim:ts=4:sts=4:sw=4:noet
+
+# ============================================================================ #
+#                            CPAN Module Dependencies
+# ============================================================================ #
+
+# needed by bash-tools/perl_generate_fatpacks.sh
+App::FatPacker
